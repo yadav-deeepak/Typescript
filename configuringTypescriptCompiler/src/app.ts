@@ -8,6 +8,8 @@ const button = document.getElementById('btn')!;
 // ! simply assures ts that we are going to get the element here
 // The question here is that how does ts knows that document.getElementById will retrun the element and how does it know about addEventListener how does it know about all these things 
 
-button.addEventListener('click', ()=>{
-    console.log('Button Is Clicked');
-})
+function clickHandler(message: string){
+    console.log(message);
+}
+
+button.addEventListener('click', clickHandler.bind(null,'Button is clicked')); 
