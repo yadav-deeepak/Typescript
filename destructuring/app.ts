@@ -99,3 +99,34 @@ for(let prod of products){
     console.log('Color: ' + prod.details?.color);0
     console.log('\n');
 }
+
+/**
+ * Lecture 34: Arrow Function
+ */
+
+//Function Declaration
+function print(message: string){
+    console.log(message);
+}
+
+//Fuction Expression
+
+// const sum = function(num1: number, num2: number){
+//     return num1 + num2;
+// }
+
+//Arrow Function
+const button = document.getElementById('btn');
+button?.addEventListener('click', ()=>{
+    console.log('button clicked'); 
+})
+
+/**Lecture 35: Default Function Parameter */
+function printDetails(name: string, age: number, gender: string = 'male'){
+    const message = `Hi! my name is ${name} and I am ${age} years old ${gender}`;
+
+    console.log(message);
+}
+
+printDetails('John', 23);
+printDetails('Particia', 24, 'Female');
