@@ -60,3 +60,24 @@ console.log(employee);
 // employee.salary = 20000; // Error private member cant be accessed outside the class.
 employee.baseLocation = 'Banglore'; // No error public members can be accessed outside the class
 // employee.getNewSalary(); // Private method cant be accessed outside the class  
+/**Lecture 42: Understanding Inheritance */
+class Person {
+    constructor(n, dob, gen) {
+        this.name = n;
+        this.dob = dob;
+        this.gender = gen;
+    }
+    calculateAge() {
+        return new Date().getFullYear() - new Date(this.dob).getFullYear();
+    }
+}
+class Employeee extends Person {
+    constructor(n, dob, gen, sal, bon) {
+        super(n, dob, gen);
+        this.salary = sal;
+        this.bonus = bon;
+    }
+}
+const emp = new Employeee('John Smith', '30-04-2001', 'male', 10000, 2000);
+console.log(emp.calculateAge());
+console.log(emp);
