@@ -61,23 +61,82 @@ console.log(employee);
 employee.baseLocation = 'Banglore'; // No error public members can be accessed outside the class
 // employee.getNewSalary(); // Private method cant be accessed outside the class  
 /**Lecture 42: Understanding Inheritance */
+// class Person{
+//     name: string;
+//     dob: string;
+//     gender: string;
+//     constructor(n: string, dob: string, gen: string){
+//         this.name = n;
+//         this.dob = dob;
+//         this.gender = gen;
+//     }
+//     calculateAge(){
+//         return new Date().getFullYear() - new Date(this.dob).getFullYear();
+//     }
+// }
+// class Employeee extends Person{
+//     salary: number;
+//     bonus: number;
+//     constructor(n: string, dob: string, gen: string, sal: number, bon: number){
+//         super(n,dob,gen);
+//         this.salary = sal;
+//         this.bonus = bon;
+//     }
+// }
+// const emp = new Employeee('John Smith', '30-04-2001','male',10000,2000);
+// console.log(emp.calculateAge());
+// console.log(emp);
+/**Lecture 43: Method overriding and protected modifier */
+// class Person{
+//     name: string;
+//     protected dob: string;
+//     gender: string;
+//     constructor(n: string, dob: string, gen: string){
+//         this.name = n;
+//         this.dob = dob;
+//         this.gender = gen;
+//     }
+//     calculateAge(){
+//         console.log("Calculate age of Person is called");
+//         return new Date().getFullYear() - new Date(this.dob).getFullYear();
+//     }
+// }
+// class Employeee extends Person{
+//     salary: number;
+//     bonus: number;
+//     constructor(n: string, dob: string, gen: string, sal: number, bon: number){
+//         super(n,dob,gen);
+//         this.salary = sal;
+//         this.bonus = bon;
+//     }
+//     calculateAge(): number {
+//         console.log("Calculate age of Employee is called");
+//         return 2024 - new Date(this.dob).getFullYear(); 
+//     }
+// }
+// const emp = new Employeee('John Smith', '04-28-2001','male',10000,2000);
+// console.log(emp.calculateAge());
+// console.log(emp);
+/**Lecture 44: Getter and Setter Methods */
 class Person {
-    constructor(n, dob, gen) {
-        this.name = n;
-        this.dob = dob;
-        this.gender = gen;
+    get age() {
+        if (this._age != null) {
+            return this._age;
+        }
+        throw new Error('Age is not defined for person: ' + this.name);
     }
-    calculateAge() {
-        return new Date().getFullYear() - new Date(this.dob).getFullYear();
+    set age(value) {
+        if (value > 0) {
+            this._age = value;
+        }
+        else
+            throw new Error("Age can't be negative");
+    }
+    constructor(name) {
+        this._age = null;
+        this.name = name;
     }
 }
-class Employeee extends Person {
-    constructor(n, dob, gen, sal, bon) {
-        super(n, dob, gen);
-        this.salary = sal;
-        this.bonus = bon;
-    }
-}
-const emp = new Employeee('John Smith', '30-04-2001', 'male', 10000, 2000);
-console.log(emp.calculateAge());
-console.log(emp);
+const person = new Person('Jang');
+person.age = 34; // Calling the setter function
+console.log(person.age); // Calling the getter function
