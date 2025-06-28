@@ -36,34 +36,34 @@
 
 /**Lecture 39: Access Modifiers */
 
-class Employee{
+// class Employee{
 
-    constructor(public empName: string, private salary: number, public baseLocation: string, public isEligible: boolean, private hikePercent: number,public readonly empId: number){
-        // this.empName = name:
-        // // this.salary = sal;
-        // this.baseLocation = loc;
-        // this.isEligible = isEligible;
-        // this.hikePercent = hp;
-        // Now we dont need to assign these values to the properties it will auotmatically get assigned
-    }
+//     constructor(public empName: string, private salary: number, public baseLocation: string, public isEligible: boolean, private hikePercent: number,public readonly empId: number){
+//         // this.empName = name:
+//         // // this.salary = sal;
+//         // this.baseLocation = loc;
+//         // this.isEligible = isEligible;
+//         // this.hikePercent = hp;
+//         // Now we dont need to assign these values to the properties it will auotmatically get assigned
+//     }
 
-    getSalary(){
-        if(this.isEligible){
-            return this.getNewSalary();
-        }
-        return this.salary;
-    }
+//     getSalary(){
+//         if(this.isEligible){
+//             return this.getNewSalary();
+//         }
+//         return this.salary;
+//     }
 
-    private getNewSalary(){ // Private method it cant be accessed outside the class
-        return this.salary * this.hikePercent / 100;
+//     private getNewSalary(){ // Private method it cant be accessed outside the class
+//         return this.salary * this.hikePercent / 100;
 
-    }
-}
+//     }
+// }
 
-const employee = new Employee('John Smith', 100000, 'London', true, 20,101);
-console.log(employee);
-// employee.salary = 20000; // Error private member cant be accessed outside the class.
-employee.baseLocation = 'Banglore'; // No error public members can be accessed outside the class
+// const employee = new Employee('John Smith', 100000, 'London', true, 20,101);
+// console.log(employee);
+// // employee.salary = 20000; // Error private member cant be accessed outside the class.
+// employee.baseLocation = 'Banglore'; // No error public members can be accessed outside the class
 // employee.getNewSalary(); // Private method cant be accessed outside the class  
 
 /**Lecture 42: Understanding Inheritance */
@@ -159,4 +159,58 @@ class Person{
 
 const person = new Person('Jang');
 person.age = 34; // Calling the setter function
-console.log(person.age); // Calling the getter function
+// console.log(person.age); // Calling the getter function
+
+// /**Lecture 45: Static Methods and Properties */
+
+// class Employee{
+//     public firstName: string;
+//     public lastName: string;
+//     public static count: number = 0;// this cant be accessed by an object of the class
+
+//     constructor (firstname: string, lastname: string){
+//         this.firstName = firstname;
+//         this.lastName = lastname;
+//         Employee.count++;
+//     }
+
+//     getFullName(){
+//         return this.firstName + ' ' + this.lastName;
+//     }
+// }  
+
+// const emp1 = new Employee('Suraj', 'Yadav');
+// console.log(Employee.count); 
+
+// const emp2 = new Employee('Viper','Ankur');
+// console.log(Employee.count);
+
+/** Lecture 46: Abstract class */
+abstract class Employee{
+    public firstname: string;
+    public lastname: string;
+
+    abstract getSalary(): number;
+
+    constructor(fn: string, ln: string){
+        this.firstname = fn;
+        this.lastname = ln;
+    }
+}
+
+// Since this permanetemployee class is inheriting from abstract Employee class it has to define the definition of the getSalary() method
+class PermanentEmployee extends Employee {
+    monthlySalary: number;
+    constructor(fn: string, ln: string, salary: number){
+        super(fn,ln);
+        this.monthlySalary = salary;
+    }
+    getSalary(): number {
+        return this.monthlySalary*12;
+    }
+}
+
+const emp1 = new PermanentEmployee('John','Smith',120000);
+console.log(emp1.getSalary());
+
+/**Lecture 47: Private Constructor and Singleton Pattern  */
