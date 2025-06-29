@@ -136,29 +136,29 @@
 
 /**Lecture 44: Getter and Setter Methods */
 
-class Person{
-    name: string;
-    private _age: number | null = null;
+// class Person{
+//     name: string;
+//     private _age: number | null = null;
 
-    get age(){ // Getter method
-        if(this._age != null){
-            return this._age;
-        }
-        throw new Error('Age is not defined for person: ' + this.name);
-    }
+//     get age(){ // Getter method
+//         if(this._age != null){
+//             return this._age;
+//         }
+//         throw new Error('Age is not defined for person: ' + this.name);
+//     }
 
-    set age(value: number){ // Setter method
-        if(value > 0){
-            this._age = value;
-        }else throw new Error("Age can't be negative");
-    }
-    constructor(name: string){
-        this.name = name;
-    }
-}
+//     set age(value: number){ // Setter method
+//         if(value > 0){
+//             this._age = value;
+//         }else throw new Error("Age can't be negative");
+//     }
+//     constructor(name: string){
+//         this.name = name;
+//     }
+// }
 
-const person = new Person('Jang');
-person.age = 34; // Calling the setter function
+// const person = new Person('Jang');
+// person.age = 34; // Calling the setter function
 // console.log(person.age); // Calling the getter function
 
 // /**Lecture 45: Static Methods and Properties */
@@ -214,3 +214,133 @@ const emp1 = new PermanentEmployee('John','Smith',120000);
 console.log(emp1.getSalary());
 
 /**Lecture 47: Private Constructor and Singleton Pattern  */
+
+class Person{
+    private static _instance: Person;
+
+    private constructor(){
+
+    }
+
+    static getInstance(){
+        if(Person._instance){
+            return Person._instance;// if instance already exist then it is going to return the same instance 
+        }
+        Person._instance = new Person();//If instance doesn't exist then it is going to create an instance
+        return Person._instance;
+    }
+}
+
+const person1 = Person.getInstance();
+const person2 = Person.getInstance();
+
+console.log(person1 === person2);
+
+/**Lecture 48: Interface */
+// interface User {
+//     firstname: string;
+//     lastname: string;
+    
+//     greetUser(): void;
+//     getFullName(): string;
+// }
+
+// class Admin implements User{
+//     constructor(public firstname: string, public lastname: string){
+
+//     }
+//     greetUser(): void {
+//         console.log("Hello Admin! " + this.getFullName());
+//     }
+//     getFullName(): string {
+//         return this.firstname + ' ' + this.lastname;
+//     }
+// } 
+
+// class Member implements User{
+//     constructor(public firstname: string, public lastname: string){
+
+//     }
+//     greetUser(): void {
+//         console.log("Hello Member!" + ' ' + this.getFullName());
+//     }
+//     getFullName(): string {
+//         return this.firstname + ' ' + this.lastname;
+//     }
+// }
+
+// // Here we want to use this same method for calling the greetUser method of both Admin and Member class for that we are creating displayGreetMessage()
+// function displayGreetMessage(user: User){ // so here instead of passing both Member and Admin object as parameter we can pass the interface doing this will allow us to pass both Member and Admin class object as parameter
+
+//     user.greetUser();// here we are calling the greetUser method of the class which will be passed as parameter to this function 
+
+// }
+
+// const admin = new Admin('John', 'Smith');
+// const member = new Member('Suraj', 'Yadav');
+
+// displayGreetMessage(admin);
+// displayGreetMessage(member);
+
+/**Lecture 49: Readonnly and optional property in interface */
+
+interface User {
+    firstname: string;
+    lastname: string;
+    readonly company: string;
+    location?: string ;// Optional property: we can define it in the class and if we want we can emit it also
+    
+    greetUser(): void;
+    getFullName(): string;
+}
+
+class Admin implements User{
+     company: string = "Google";//now we can not change the value of company because its a readonly property
+
+    constructor(public firstname: string, public lastname: string){
+
+    }
+    greetUser(): void {
+        console.log("Hello Admin! " + this.getFullName());
+    }
+    getFullName(): string {
+        return this.firstname + ' ' + this.lastname;
+    }
+} 
+
+class Member implements User{
+    company: string = "Amazon";
+    location?: string | undefined;
+    
+    constructor(public firstname: string, public lastname: string,loc?: string){
+        this.location = loc;// if user doesn't pass the value of location then it will be undefined
+
+    }
+    greetUser(): void {
+        console.log("Hello Member!" + ' ' + this.getFullName());
+    }
+    getFullName(): string {
+        return this.firstname + ' ' + this.lastname;
+    }
+}
+
+// Here we want to use this same method for calling the greetUser method of both Admin and Member class for that we are creating displayGreetMessage()
+function displayGreetMessage(user: User){ // so here instead of passing both Member and Admin object as parameter we can pass the interface doing this will allow us to pass both Member and Admin class object as parameter
+
+    user.greetUser();// here we are calling the greetUser method of the class which will be passed as parameter to this function 
+
+}
+
+let admin: User;// if we make this variable as admin then we will not see any error because we have not made company property readonly in admin class
+
+admin = new Admin('John', 'Smith');
+// admin.company = "Microsoft";// this will give and error because in User interface we have made company property as readonly
+
+const member = new Member('Suraj', 'Yadav');
+member.company = "Microsoft";
+
+console.log(admin.company);
+
+displayGreetMessage(admin);
+displayGreetMessage(member);
+

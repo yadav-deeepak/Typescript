@@ -260,16 +260,16 @@ console.log(str3);
  * Lecture 16: Function type for callback 
  */
 
-function getResult(num1: number, num2: number, print: (str: string, n: number) => void){
-    const result = num1 + num2;
-    print('Sum =', result);
-}
+// function getResult(num1: number, num2: number, print: (str: string, n: number) => void){
+//     const result = num1 + num2;
+//     print('Sum =', result);
+// }
 
-function display(msg: string, result: number){
-    console.log(msg + result);
-}
+// function display(msg: string, result: number){
+//     console.log(msg + result);
+// }
 
-getResult(12,14,display);
+// getResult(12,14,display);
 
 /****************************
  * Lecture 17: Unknown Type in Typescript
@@ -292,16 +292,16 @@ getResult(12,14,display);
  * Lecture 18: Never Type in Typescript
  */
 
-function greetUser(name: string): void{
-    console.log('hello ,' + name);
-}
-// greetUser('John');
+// function greetUser(name: string): void{
+//     console.log('hello ,' + name);
+// }
+// // greetUser('John');
 
-function createError(errormsg: string, errorCode: number): never{
-    throw {message: errormsg, code: errorCode};
-}
+// function createError(errormsg: string, errorCode: number): never{
+//     throw {message: errormsg, code: errorCode};
+// }
 
-// createError('Internal server error', 500);
+// // createError('Internal server error', 500);
 
-console.log(greetUser('Mark'));
-console.log(createError('An Error has Occurred', 404)); 
+// console.log(greetUser('Mark'));
+// console.log(createError('An Error has Occurred', 404)); 
