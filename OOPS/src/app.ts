@@ -284,18 +284,84 @@ console.log(person1 === person2);
 
 /**Lecture 49: Readonnly and optional property in interface */
 
-interface User {
+// interface User {
+//     firstname: string;
+//     lastname: string;
+//     readonly company: string;
+//     location?: string ;// Optional property: we can define it in the class and if we want we can emit it also
+    
+//     greetUser(): void;
+//     getFullName(): string;
+// }
+
+// class Admin implements User{
+//      company: string = "Google";//now we can not change the value of company because its a readonly property
+
+//     constructor(public firstname: string, public lastname: string){
+
+//     }
+//     greetUser(): void {
+//         console.log("Hello Admin! " + this.getFullName());
+//     }
+//     getFullName(): string {
+//         return this.firstname + ' ' + this.lastname;
+//     }
+// } 
+
+// class Member implements User{
+//     company: string = "Amazon";
+//     location?: string | undefined;
+    
+//     constructor(public firstname: string, public lastname: string,loc?: string){
+//         this.location = loc;// if user doesn't pass the value of location then it will be undefined
+
+//     }
+//     greetUser(): void {
+//         console.log("Hello Member!" + ' ' + this.getFullName());
+//     }
+//     getFullName(): string {
+//         return this.firstname + ' ' + this.lastname;
+//     }
+// }
+
+// // Here we want to use this same method for calling the greetUser method of both Admin and Member class for that we are creating displayGreetMessage()
+// function displayGreetMessage(user: User){ // so here instead of passing both Member and Admin object as parameter we can pass the interface doing this will allow us to pass both Member and Admin class object as parameter
+
+//     user.greetUser();// here we are calling the greetUser method of the class which will be passed as parameter to this function 
+
+// }
+
+// let admin: User;// if we make this variable as admin then we will not see any error because we have not made company property readonly in admin class
+
+// admin = new Admin('John', 'Smith');
+// // admin.company = "Microsoft";// this will give and error because in User interface we have made company property as readonly
+
+// const member = new Member('Suraj', 'Yadav');
+// member.company = "Microsoft";
+
+// console.log(admin.company);
+
+// displayGreetMessage(admin);
+// displayGreetMessage(member);
+
+/**Lecture 50: Extending Interface */
+
+interface Roles{
+    getRole(): string;
+}
+
+interface User extends Roles {//Here User interface will contain all the properties and methods of Roles interface also
     firstname: string;
     lastname: string;
     readonly company: string;
-    location?: string ;// Optional property: we can define it in the class and if we want we can emit it also
+    location?: string ;
     
     greetUser(): void;
     getFullName(): string;
 }
 
-class Admin implements User{
-     company: string = "Google";//now we can not change the value of company because its a readonly property
+class Admin implements User{ // we dont need to implement roles here because user interface also contain the properties and methods of roles interface
+     company: string = "Google";
 
     constructor(public firstname: string, public lastname: string){
 
@@ -306,6 +372,9 @@ class Admin implements User{
     getFullName(): string {
         return this.firstname + ' ' + this.lastname;
     }
+    getRole(): string {
+        return "ADMIN";
+    }
 } 
 
 class Member implements User{
@@ -313,7 +382,7 @@ class Member implements User{
     location?: string | undefined;
     
     constructor(public firstname: string, public lastname: string,loc?: string){
-        this.location = loc;// if user doesn't pass the value of location then it will be undefined
+        this.location = loc;
 
     }
     greetUser(): void {
@@ -322,25 +391,51 @@ class Member implements User{
     getFullName(): string {
         return this.firstname + ' ' + this.lastname;
     }
+    getRole(): string {
+        return "MEMBER";
+    }
 }
 
-// Here we want to use this same method for calling the greetUser method of both Admin and Member class for that we are creating displayGreetMessage()
-function displayGreetMessage(user: User){ // so here instead of passing both Member and Admin object as parameter we can pass the interface doing this will allow us to pass both Member and Admin class object as parameter
-
-    user.greetUser();// here we are calling the greetUser method of the class which will be passed as parameter to this function 
+function displayGreetMessage(user: User){ 
+    user.greetUser(); 
 
 }
 
-let admin: User;// if we make this variable as admin then we will not see any error because we have not made company property readonly in admin class
+let admin: User;
 
 admin = new Admin('John', 'Smith');
-// admin.company = "Microsoft";// this will give and error because in User interface we have made company property as readonly
+let x = admin.getRole();
+console.log(x);
 
 const member = new Member('Suraj', 'Yadav');
 member.company = "Microsoft";
+let y= member.getRole();
 
+console.log(y); 
 console.log(admin.company);
 
-displayGreetMessage(admin);
-displayGreetMessage(member);
+/**Lecture 51: Using interface as function type */
+
+// Way in which we can define the type for the function
+// type SumFn = (num1: number, num2: number) => number;
+
+// let add: SumFn;
+
+// add = (n1: number, n2: number) =>{
+//     return n1+n2;
+
+// }
+
+// We can also use interface for defining the type for the function.
+//We mostly dont use this approach we use the above approach only
+
+interface Sumfn{
+    (num1: number, num2: number): number;
+}
+
+let add: Sumfn;
+
+add = (n1: number, n2: number) => {
+    return n1+n2;
+}
 

@@ -189,7 +189,7 @@ class Admin {
     constructor(firstname, lastname) {
         this.firstname = firstname;
         this.lastname = lastname;
-        this.company = "Google"; //now we can not change the value of company because its a readonly property
+        this.company = "Google";
     }
     greetUser() {
         console.log("Hello Admin! " + this.getFullName());
@@ -197,13 +197,16 @@ class Admin {
     getFullName() {
         return this.firstname + ' ' + this.lastname;
     }
+    getRole() {
+        return "ADMIN";
+    }
 }
 class Member {
     constructor(firstname, lastname, loc) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.company = "Amazon";
-        this.location = loc; // if user doesn't pass the value of location then it will be undefined
+        this.location = loc;
     }
     greetUser() {
         console.log("Hello Member!" + ' ' + this.getFullName());
@@ -211,16 +214,23 @@ class Member {
     getFullName() {
         return this.firstname + ' ' + this.lastname;
     }
+    getRole() {
+        return "MEMBER";
+    }
 }
-// Here we want to use this same method for calling the greetUser method of both Admin and Member class for that we are creating displayGreetMessage()
 function displayGreetMessage(user) {
-    user.greetUser(); // here we are calling the greetUser method of the class which will be passed as parameter to this function 
+    user.greetUser();
 }
-let admin; // if we make this variable as admin then we will not see any error because we have not made company property readonly in admin class
+let admin;
 admin = new Admin('John', 'Smith');
-// admin.company = "Microsoft";// this will give and error because in User interface we have made company property as readonly
+let x = admin.getRole();
+console.log(x);
 const member = new Member('Suraj', 'Yadav');
 member.company = "Microsoft";
+let y = member.getRole();
+console.log(y);
 console.log(admin.company);
-displayGreetMessage(admin);
-displayGreetMessage(member);
+let add;
+add = (n1, n2) => {
+    return n1 + n2;
+};
