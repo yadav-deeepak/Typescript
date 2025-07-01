@@ -346,73 +346,73 @@ console.log(person1 === person2);
 
 /**Lecture 50: Extending Interface */
 
-interface Roles{
-    getRole(): string;
-}
+// interface Roles{
+//     getRole(): string;
+// }
 
-interface User extends Roles {//Here User interface will contain all the properties and methods of Roles interface also
-    firstname: string;
-    lastname: string;
-    readonly company: string;
-    location?: string ;
+// interface User extends Roles {//Here User interface will contain all the properties and methods of Roles interface also
+//     firstname: string;
+//     lastname: string;
+//     readonly company: string;
+//     location?: string ;
     
-    greetUser(): void;
-    getFullName(): string;
-}
+//     greetUser(): void;
+//     getFullName(): string;
+// }
 
-class Admin implements User{ // we dont need to implement roles here because user interface also contain the properties and methods of roles interface
-     company: string = "Google";
+// class Admin implements User{ // we dont need to implement roles here because user interface also contain the properties and methods of roles interface
+//      company: string = "Google";
 
-    constructor(public firstname: string, public lastname: string){
+//     constructor(public firstname: string, public lastname: string){
 
-    }
-    greetUser(): void {
-        console.log("Hello Admin! " + this.getFullName());
-    }
-    getFullName(): string {
-        return this.firstname + ' ' + this.lastname;
-    }
-    getRole(): string {
-        return "ADMIN";
-    }
-} 
+//     }
+//     greetUser(): void {
+//         console.log("Hello Admin! " + this.getFullName());
+//     }
+//     getFullName(): string {
+//         return this.firstname + ' ' + this.lastname;
+//     }
+//     getRole(): string {
+//         return "ADMIN";
+//     }
+// } 
 
-class Member implements User{
-    company: string = "Amazon";
-    location?: string | undefined;
+// class Member implements User{
+//     company: string = "Amazon";
+//     location?: string | undefined;
     
-    constructor(public firstname: string, public lastname: string,loc?: string){
-        this.location = loc;
+//     constructor(public firstname: string, public lastname: string,loc?: string){
+//         this.location = loc;
 
-    }
-    greetUser(): void {
-        console.log("Hello Member!" + ' ' + this.getFullName());
-    }
-    getFullName(): string {
-        return this.firstname + ' ' + this.lastname;
-    }
-    getRole(): string {
-        return "MEMBER";
-    }
-}
+//     }
+//     greetUser(): void {
+//         console.log("Hello Member!" + ' ' + this.getFullName());
+//     }
+//     getFullName(): string {
+//         return this.firstname + ' ' + this.lastname;
+//     }
+//     getRole(): string {
+//         return "MEMBER";
+//     }
+// }
 
-function displayGreetMessage(user: User){ 
-    user.greetUser(); 
+// function displayGreetMessage(user: User){ 
+//     user.greetUser(); 
 
-}
+// }
 
-let admin: User;
+// let admin: User;
 
-admin = new Admin('John', 'Smith');
-let x = admin.getRole();
-console.log(x);
+// admin = new Admin('John', 'Smith');
+// let x = admin.getRole();
+// console.log(x);
 
-const member = new Member('Suraj', 'Yadav');
-member.company = "Microsoft";
-let y= member.getRole();
+// const member = new Member('Suraj', 'Yadav');
+// member.company = "Microsoft";
+// let y= member.getRole();
 
-console.log(y); 
-console.log(admin.company);
+// console.log(y); 
+// console.log(admin.company);
 
 /**Lecture 51: Using interface as function type */
 
@@ -429,13 +429,18 @@ console.log(admin.company);
 // We can also use interface for defining the type for the function.
 //We mostly dont use this approach we use the above approach only
 
-interface Sumfn{
-    (num1: number, num2: number): number;
-}
+// interface Sumfn{
+//     (num1: number, num2: number): number;
+// }
 
-let add: Sumfn;
+// let add: Sumfn;
 
-add = (n1: number, n2: number) => {
-    return n1+n2;
-}
+// add = (n1: number, n2: number) => {
+//     return n1+n2;
+// }
 
+ 
+
+
+
+ 
