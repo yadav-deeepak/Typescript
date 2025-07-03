@@ -78,4 +78,12 @@ const users = [
     { name: 'John', age: 30, gender: 'Male' },
     { name: 'Mark', interest: ['music', 'football'], location: 'London' }
 ];
-// Here as you can see we have different user with different properties
+function addition(a, b) {
+    if (typeof a === 'string' || typeof b === 'string') {
+        return a.toString() + b.toString();
+    }
+    return a + b;
+}
+addition('Hello', 'World').split('');
+// Here it will give an error because funtion return type is StringOrNumber and .split() is used only on string values. It dont know when this function will return a string value or a number value so for this we can use function overloading
+// After doing the function overloading the error will be gone

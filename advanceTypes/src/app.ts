@@ -279,3 +279,28 @@ const users:  User[] = [
     {name: 'Mark', interest: ['music','football'], location: 'London'}
 ]
 // Here as you can see we have different user with different properties
+
+/**Lecture 57: Function Overloading */
+// Function name should be same as the function name that you want to overload
+
+type StringOrNumber = string | number;
+
+function addition(a: number, b: number): number;// Here we have done function overloading of the addition function so now when the both parameters are number then the return type will be number 
+
+function addition(a: string, b: string): string;// When both the parameters are string then the return type will be string
+
+function addition(a: number, b: string): string;// When first parameter is a number and second is string then it will return a string value
+
+function addition(a: string, b: number): string;// When first parameter is a string and second is number then it will retrun string value
+
+function addition(a: StringOrNumber, b: StringOrNumber){
+    if(typeof a === 'string' || typeof b === 'string'){
+        return a.toString() + b.toString();
+    }
+    return a+b;
+}
+
+addition('Hello', 'World').split('');
+// Here it will give an error because funtion return type is StringOrNumber and .split() is used only on string values. It dont know when this function will return a string value or a number value so for this we can use function overloading
+// After doing the function overloading the error will be gone
+
