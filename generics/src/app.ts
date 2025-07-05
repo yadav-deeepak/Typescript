@@ -58,9 +58,15 @@ console.log(swap(['Hello','Hi', 'How are you'],1,2));
 
 /**Lecture 60:  Working with the constraints */
 //Example using multiple generics
-function expand<T, U>(obj1: T, obj2: U){
-    return Object.assign(obj1,obj2);//Here we are going to need to use constraints here 
+// Generic costraints are powerful feature in typescript that allows you to define limitations on the types of data that can be used with generic code
+
+function expand<T extends object, U extends object>(obj1: T , obj2: U){
+    return Object.assign(obj1,obj2);//Here common properties will be take from the object and new object will be created and it will be  returned
+    //Here it is expecting the first argument to be empty so here we want to tell TS that first value to be object and the second value is also going to be object 
+    // Basically we wanna make a constraint to T that its type should be object nothing else
 }
+// Now as we have set T extends object so now we can't pass any other type of value to obj1 we can pass any type of value for obj2
 
 let combined = expand({name: 'John', age: 28}, {name: 'John', gender: 'Male'});
-// console.log(combined.name);//here it is giving an error because it doesnt know that object which it is returning have name property or not. To solve this problem we have to set generic type for obj1 and obj2
+console.log(combined.name);
+console.log(combined);
