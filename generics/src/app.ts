@@ -36,17 +36,17 @@ console.log("Hello World");
 
 /**Lecture 59: Creating a generic function */
 // A generic function uses a type parameter (like T) to indicate that the function can accept arguments of any type and return the same or related type
-function swap<T>(arr: T[], index1: number, index2: number): T[]{
-    //SWAPPING LOGIC
-    if(index1 < 0 || index1 > arr.length || index2 < 0 || index2 >= arr.length){
-        throw new Error ('Invalid Index');
-    }
-    [arr[index1], arr[index2]] = [arr[index2], arr[index1]]; //array destructuring syntax
-    return arr;
-}
+// function swap<T>(arr: T[], index1: number, index2: number): T[]{
+//     //SWAPPING LOGIC
+//     if(index1 < 0 || index1 > arr.length || index2 < 0 || index2 >= arr.length){
+//         throw new Error ('Invalid Index');
+//     }
+//     [arr[index1], arr[index2]] = [arr[index2], arr[index1]]; //array destructuring syntax
+//     return arr;
+// }
 
-console.log(swap([1,2,3,4,5],0,2));
-console.log(swap(['Hello','Hi', 'How are you'],1,2));
+// console.log(swap([1,2,3,4,5],0,2));
+// console.log(swap(['Hello','Hi', 'How are you'],1,2));
 
 // //Example using multiple generics
 // function expand<T, U>(obj1: T, obj2: U){
@@ -60,13 +60,25 @@ console.log(swap(['Hello','Hi', 'How are you'],1,2));
 //Example using multiple generics
 // Generic costraints are powerful feature in typescript that allows you to define limitations on the types of data that can be used with generic code
 
-function expand<T extends object, U extends object>(obj1: T , obj2: U){
-    return Object.assign(obj1,obj2);//Here common properties will be take from the object and new object will be created and it will be  returned
-    //Here it is expecting the first argument to be empty so here we want to tell TS that first value to be object and the second value is also going to be object 
-    // Basically we wanna make a constraint to T that its type should be object nothing else
-}
+// function expand<T extends object, U extends object>(obj1: T , obj2: U){
+//     return Object.assign(obj1,obj2);//Here common properties will be take from the object and new object will be created and it will be  returned
+//     //Here it is expecting the first argument to be empty so here we want to tell TS that first value to be object and the second value is also going to be object 
+//     // Basically we wanna make a constraint to T that its type should be object nothing else
+// }
 // Now as we have set T extends object so now we can't pass any other type of value to obj1 we can pass any type of value for obj2
 
-let combined = expand({name: 'John', age: 28}, {name: 'John', gender: 'Male'});
-console.log(combined.name);
-console.log(combined);
+// let combined = expand({name: 'John', age: 28}, {name: 'John', gender: 'Male'});
+// console.log(combined.name);
+// console.log(combined);
+
+/**Lecture 61: The keyof constraints */
+function getPropValue<T extends object, U extends keyof T>(obj: T, key: U){
+    // So here whatever key(U) we are getting it should be the keyof object T 
+    return obj[key];//Here we wanna return obj[key] for example lets say that the obj has a name and age property and the key has age property so this obj[key] will retrun that value of that age property
+    // So here we are getting an error because TS doesnt know wheater this object is going to have a key(whatever value we will pass for this key TS doesnt know wheater this value is present in the object or not)
+    //To solve this again here we can use generic type
+}
+getPropValue({name: 'John', age: 28}, 'name');
+//So here we want that this function should extract the name property from the given object {name: 'John', age: 28}
+
+/**Lecture 62: Creating a generic class */
