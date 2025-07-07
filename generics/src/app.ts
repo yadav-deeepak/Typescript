@@ -82,3 +82,47 @@ getPropValue({name: 'John', age: 28}, 'name');
 //So here we want that this function should extract the name property from the given object {name: 'John', age: 28}
 
 /**Lecture 62: Creating a generic class */
+
+type Book = {
+    name: string;
+    pages: number;
+    price: number;
+}
+
+type Cloth = {
+    name: string;
+    size: string;
+    price: number;
+}
+
+//Here we want to use this class ShoppingCart to add both Book and Cloth type product for our cart for that we have to use generic type
+// So here we are able to use this ShoppingCart class for storing both Book and Cloth type values
+
+class ShoppingCart<T> {
+    private items: T[] = [];
+
+    addItem(item: T){
+        this.items.push(item);
+    }
+
+    getItems(){
+        return this.items;
+    }
+}
+
+const bookCart = new ShoppingCart<Book>();
+//bookCart can store the values of type Book
+bookCart.addItem({name: 'a', pages: 223, price: 24});
+bookCart.addItem({name: 'B', pages: 273, price: 26});
+console.log(bookCart.getItems());//returns array of books 
+
+const clothCart = new ShoppingCart<Cloth>();// clothCart can store the values of type cloth
+clothCart.addItem({name: 'T-shirt', size: 'M', price: 354});
+clothCart.addItem({name: 'Jeans', size: 'M', price: 1200});
+console.log(clothCart.getItems());//returns array of cloths
+
+//We can also use it to store normal type of values
+const strKart = new ShoppingCart<string>();
+strKart.addItem('Hello');
+strKart.addItem('world');
+console.log(strKart.getItems());//returns array of string 
