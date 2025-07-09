@@ -62,30 +62,26 @@ function getPropValue(obj, key) {
     //To solve this again here we can use generic type
 }
 getPropValue({ name: 'John', age: 28 }, 'name');
-//Here we want to use this class ShoppingCart to add both Book and Cloth type product for our cart for that we have to use generic type
-// So here we are able to use this ShoppingCart class for storing both Book and Cloth type values
-class ShoppingCart {
-    constructor() {
-        this.items = [];
-    }
-    addItem(item) {
-        this.items.push(item);
-    }
-    getItems() {
-        return this.items;
-    }
+function updateUserSettings(partialSettings) {
+    partialSettings.darkMode = true;
+    partialSettings.language = 'fr';
 }
-const bookCart = new ShoppingCart();
-//bookCart can store the values of type Book
-bookCart.addItem({ name: 'a', pages: 223, price: 24 });
-bookCart.addItem({ name: 'B', pages: 273, price: 26 });
-console.log(bookCart.getItems()); //returns array of books 
-const clothCart = new ShoppingCart(); // clothCart can store the values of type cloth
-clothCart.addItem({ name: 'T-shirt', size: 'M', price: 354 });
-clothCart.addItem({ name: 'Jeans', size: 'M', price: 1200 });
-console.log(clothCart.getItems()); //returns array of cloths
-//We can also use it to store normal type of values
-const strKart = new ShoppingCart();
-strKart.addItem('Hello');
-strKart.addItem('world');
-console.log(strKart.getItems()); //returns array of string 
+// Here we want to send object to the updateUserSetting() with only these two properties darkMode and language for that we can use partials
+// Using partial generics we can make the properties of an object optional using partials we can make the properties of a type as optional
+// We can use partials in such scenarios where only partial data is required
+const user = {
+    username: 'John Smith',
+    email: 'johnsmith@gmail.com',
+    darkMode: false,
+    language: 'en'
+};
+// user.username = 'something';// this will throw an error because user is readonly
+const newSettings = {
+    darkMode: true,
+    language: 'fr '
+};
+updateUserSettings(newSettings);
+let arr = ['john', 'mark'];
+//  
+console.log(arr);
+// we wanna make this array readonly so here we will use readonly generic which will not allow to write anything inside this arr

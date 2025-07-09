@@ -98,31 +98,115 @@ type Cloth = {
 //Here we want to use this class ShoppingCart to add both Book and Cloth type product for our cart for that we have to use generic type
 // So here we are able to use this ShoppingCart class for storing both Book and Cloth type values
 
-class ShoppingCart<T> {
-    private items: T[] = [];
+// class ShoppingCart<T> {
+//     private items: T[] = [];
 
-    addItem(item: T){
-        this.items.push(item);
-    }
+//     addItem(item: T){
+//         this.items.push(item);
+//     }
 
-    getItems(){
-        return this.items;
-    }
-}
+//     getItems(){
+//         return this.items;
+//     }
+// }
 
-const bookCart = new ShoppingCart<Book>();
-//bookCart can store the values of type Book
-bookCart.addItem({name: 'a', pages: 223, price: 24});
-bookCart.addItem({name: 'B', pages: 273, price: 26});
-console.log(bookCart.getItems());//returns array of books 
+// const bookCart = new ShoppingCart<Book>();
+// //bookCart can store the values of type Book
+// bookCart.addItem({name: 'a', pages: 223, price: 24});
+// bookCart.addItem({name: 'B', pages: 273, price: 26});
+// console.log(bookCart.getItems());//returns array of books 
 
-const clothCart = new ShoppingCart<Cloth>();// clothCart can store the values of type cloth
-clothCart.addItem({name: 'T-shirt', size: 'M', price: 354});
-clothCart.addItem({name: 'Jeans', size: 'M', price: 1200});
-console.log(clothCart.getItems());//returns array of cloths
+// const clothCart = new ShoppingCart<Cloth>();// clothCart can store the values of type cloth
+// clothCart.addItem({name: 'T-shirt', size: 'M', price: 354});
+// clothCart.addItem({name: 'Jeans', size: 'M', price: 1200});
+// console.log(clothCart.getItems());//returns array of cloths
+
+// //We can also use it to store normal type of values
+// const strKart = new ShoppingCart<string>();
+// strKart.addItem('Hello');
+// strKart.addItem('world');
+// console.log(strKart.getItems());//returns array of string 
+
+/**Lecture 63: Generic VS Union Type */
+//As we can see in above example we are creating an instance of the class and while creating an instance we are specifying the type.
+// So using generics TS enforces the type that we give while creating an instance and only that type of value will be allowed if we give any other type of value we will get and error
+//For Example:
+
+// class ShoppingCart<T> {
+//     private items: T[] = [];
+
+//     addItem(item: T){
+//         this.items.push(item);
+//     }
+
+//     getItems(){
+//         return this.items;
+//     }
+// }
 
 //We can also use it to store normal type of values
-const strKart = new ShoppingCart<string>();
-strKart.addItem('Hello');
-strKart.addItem('world');
-console.log(strKart.getItems());//returns array of string 
+// const strKart = new ShoppingCart<string>();
+// strKart.addItem('Hello');
+// strKart.addItem('world');
+// console.log(strKart.getItems());//returns array of string 
+
+//Same example using Union type
+
+// class ShoppingCart {
+//     private items: string[] | number[] = [];
+
+//     addItem(item: string  | number){
+//         this.items.push(item);//Here we are getting an error because items can be either array of string or array of number but here its both so here it is showing an error
+//         // So this is the difference between the union and generic type in generic type we give the type during the run time there we dont have the concept of either/or 
+//         // Whatever type we will specify during the runtime will be the type of the item as well so there will be no concept of either/or(either this type of value or that type of value)
+//     }
+
+//     getItems(){
+//         return this.items;
+//     }
+// }
+// const strKart = new ShoppingCart();
+// strKart.addItem('Hello');
+// strKart.addItem('world');
+// strKart.addItem(100);// Here this will not show an error
+// console.log(strKart.getItems());//returns array of string 
+
+//The purpose of generics is u write the code once and adapt it to different datatype by specifying the type during the usage. It ensures type safety throughout the code catching potential errors at compile time
+//But union type represents a value that can be one of several specific types they combine multiple types using the pipe symbol . The purpose of union type is to handle multiple datatypes with union type we might need to perform type checks or use type guarding to determine the actual type at runtime
+
+/**Lecture 64: Partial and readonly Generics */
+interface UserSettings{
+    username: string;
+    email: string;
+    darkMode: boolean;
+    language: string;
+}
+
+function updateUserSettings(partialSettings: Partial<UserSettings>){// here it will make the properties of user object as optional
+    partialSettings.darkMode = true;
+    partialSettings.language = 'fr';
+}
+// Here we want to send object to the updateUserSetting() with only these two properties darkMode and language for that we can use partials
+// Using partial generics we can make the properties of an object optional using partials we can make the properties of a type as optional
+// We can use partials in such scenarios where only partial data is required
+
+const user: Readonly<UserSettings> = {
+    username: 'John Smith',
+    email: 'johnsmith@gmail.com',
+    darkMode: false,
+    language: 'en'
+}
+
+// user.username = 'something';// this will throw an error because user is readonly
+
+const newSettings = {
+    darkMode: true,
+    language: 'fr '
+}
+
+updateUserSettings(newSettings);
+
+let arr: Readonly<string[]> = ['john','mark'];
+//  
+console.log(arr);
+// we wanna make this array readonly so here we will use readonly generic which will not allow to write anything inside this arr
