@@ -3,6 +3,9 @@ const expDesc = document.getElementById('desc')! as HTMLInputElement;
 const expAmt = document.getElementById('amount')! as HTMLInputElement;
 const addExpBtn = document.querySelector('.add-expense-btn')! as HTMLButtonElement;
 
+const debitDiv = document.querySelector('.expense-debit-item-container')! as HTMLDivElement;
+const creditDiv = document.querySelector('.expense-credit-item-container')! as HTMLDivElement;
+
 let expenseItems: Expense[] = [];
 
 class Expense{
@@ -20,12 +23,20 @@ class Expense{
     }
 }
 
+function DisplayExpenseItems(){
+    debitDiv.innerHTML = '';
+    creditDiv.innerHTML = '';
+    for(let i = 0; i< expenseItems.length ; i++){
+        let expItem = expenseItems[i];
+        let containerDiv = expItem.type === 'credit' ? creditDiv : debitDiv;
+        containerDiv?.insertAdjacentHTML('beforeend', `<h3>${expItem.description}</h3>`);
+    }
+}
+
 addExpBtn.addEventListener('click', function(event){
     event.preventDefault(); // This will prevent the default behaviour 
     let type: 'credit' | 'debit' = expType.value === 'credit' ? 'credit' : 'debit';// we cant pass expType.value directly because it can have either credit or debit any of the type so this will give an error
 
     const exp = new Expense(type,expDesc.value,+expAmt.value);
-    console.log(exp);
-    expenseItems.push(exp);
-    console.log(expenseItems);
+    DisplayExpenseItems();
 })
