@@ -25,7 +25,17 @@ function DisplayExpenseItems() {
     for (let i = 0; i < expenseItems.length; i++) {
         let expItem = expenseItems[i];
         let containerDiv = expItem.type === 'credit' ? creditDiv : debitDiv;
-        containerDiv === null || containerDiv === void 0 ? void 0 : containerDiv.insertAdjacentHTML('beforeend', `<h3>${expItem.description}</h3>`);
+        let cssClass = expItem.type === 'credit' ? 'credit-item' : 'debit-item';
+        let template = `
+        <div class="${cssClass}">
+            <div class= "exp-desc">${expItem.description}</div>
+            <div class="exp-amt">${expItem.amount}</div>
+            <div class="exp-delete">
+                 <button class="delete-expense"></button>
+            </div>
+        </div>
+        `;
+        containerDiv === null || containerDiv === void 0 ? void 0 : containerDiv.insertAdjacentHTML('beforeend', template);
     }
 }
 addExpBtn.addEventListener('click', function (event) {

@@ -29,7 +29,20 @@ function DisplayExpenseItems(){
     for(let i = 0; i< expenseItems.length ; i++){
         let expItem = expenseItems[i];
         let containerDiv = expItem.type === 'credit' ? creditDiv : debitDiv;
-        containerDiv?.insertAdjacentHTML('beforeend', `<h3>${expItem.description}</h3>`);
+
+        let cssClass = expItem.type === 'credit' ? 'credit-item' : 'debit-item';
+        let template = `
+        <div class="${cssClass}">
+            <div class= "exp-desc">${expItem.description}</div>
+            <div class="exp-amt">${expItem.amount}</div>
+            <div class="exp-delete">
+                 <button class="delete-expense"></button>
+            </div>
+        </div>
+        `;
+
+
+        containerDiv?.insertAdjacentHTML('beforeend', template);
     }
 }
 
