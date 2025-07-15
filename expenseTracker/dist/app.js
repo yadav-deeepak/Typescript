@@ -5,7 +5,9 @@ const expAmt = document.getElementById('amount');
 const addExpBtn = document.querySelector('.add-expense-btn');
 const debitDiv = document.querySelector('.expense-debit-item-container');
 const creditDiv = document.querySelector('.expense-credit-item-container');
+const totalAmountDiv = document.querySelector('.total-expense-amount');
 let expenseItems = [];
+let totalAmount = 0;
 class Expense {
     constructor(type, desc, amount) {
         this.id = 0;
@@ -38,9 +40,25 @@ function DisplayExpenseItems() {
         containerDiv === null || containerDiv === void 0 ? void 0 : containerDiv.insertAdjacentHTML('beforeend', template);
     }
 }
+function calculateTotal() {
+    return expenseItems.reduce((total, exp) => {
+        let amount = exp.amount;
+        if (exp.type === 'debit') {
+            amount = -exp.amount;
+        }
+        total += amount;
+        return total;
+    }, 0);
+}
+function showTotal() {
+    totalAmountDiv.textContent = 'Aval. Balance: ' + totalAmount.toString();
+}
 addExpBtn.addEventListener('click', function (event) {
     event.preventDefault(); // This will prevent the default behaviour 
     let type = expType.value === 'credit' ? 'credit' : 'debit'; // we cant pass expType.value directly because it can have either credit or debit any of the type so this will give an error
     const exp = new Expense(type, expDesc.value, +expAmt.value);
+    expenseItems.push(exp);
     DisplayExpenseItems();
+    totalAmount = calculateTotal();
+    showTotal();
 });
