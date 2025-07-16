@@ -33,7 +33,7 @@ function DisplayExpenseItems() {
             <div class= "exp-desc">${expItem.description}</div>
             <div class="exp-amt">${expItem.amount}</div>
             <div class="exp-delete">
-                 <button class="delete-expense"></button>
+                 <button class="delete-expense" onClick="deleteExpense(${expItem.id})"></button>
             </div>
         </div>
         `;
@@ -62,3 +62,22 @@ addExpBtn.addEventListener('click', function (event) {
     totalAmount = calculateTotal();
     showTotal();
 });
+function deleteExpense(id) {
+    const exp = expenseItems.find((el) => {
+        return el.id === id;
+    });
+    let index = expenseItems.indexOf(exp);
+    expenseItems.splice(index, 1);
+    DisplayExpenseItems();
+    updateBalance(exp);
+}
+function updateBalance(expense) {
+    let amount = expense.amount;
+    if (expense.type === 'credit') {
+        totalAmount -= amount;
+    }
+    else {
+        totalAmount += amount;
+    }
+    showTotal();
+}
