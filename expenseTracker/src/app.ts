@@ -93,6 +93,6 @@ function updateBalance(expense: Expense){
     }else{
         totalAmount += amount;
     }
-    showTotal();
+    showTotal();// calling show total method
 
 }
