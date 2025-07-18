@@ -1,0 +1,2 @@
+# What are decorators in Typescript?
+-> Decorators are a special kind of declaration that can be attached to class ,method ,accessors, properties or parameters to modify their behavior at runtime.
