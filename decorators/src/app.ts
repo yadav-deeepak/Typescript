@@ -1,1 +1,26 @@
-console.log("dugna lagaan lega");
+/**
+ * Understanding Decorators 
+ */
+
+function Logger (target: Function){
+    console.log('Logging...');
+    console.log(target);
+}
+// Here it will take target parameter and here target is this User class 
+// Here we are specifying the type of target as a function because as we know that the class we create in js uses the constructor function syntax behind the scene 
+// User class behind the scene is a function 
+// Note: In order to use decorators we need to go to tsconfig.json file and uncomment experimentalDecorators: true 
+// Decorator will be called first so first logging and then user constructor is called will be printed
+
+@Logger
+class User{
+    name: string = 'John';
+    age: number = 23;
+
+    constructor(){
+        console.log('User constructor is called....');
+    }
+}
+// Even if we dont create an object then also the decorator will be called whenever this class will be encountered the decorator will be called .
+
+const u = new User();

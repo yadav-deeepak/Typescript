@@ -1,2 +1,130 @@
+#####################################
 # What are decorators in Typescript?
+#####################################
 -> Decorators are a special kind of declaration that can be attached to class ,method ,accessors, properties or parameters to modify their behavior at runtime.
+-> They are functions that are prefixed with @ and are executed when the target (class ,method etc) is declared.
+## Think of decorators like annotations or wrappers that add extra features to your class or methods without modifying their actual implementation.
+
+###########################
+# When are decorators used?
+########################### 
+-> Decorators are mostly used in:
+   -> Angular (like @Component, @Injectable)
+   -> Dependency Injection
+   -> Metadata generation
+   -> Logging, validation, or authorization
+   -> ORMs like TypeORM (@Entity, @Column, etc.)
+
+######################
+# Types of decorators 
+######################
+1. Class Decorator
+##################
+-> Used to observe,modify or replace a class definition.
+Eg: 
+function Logger(constructor: Function) {
+  console.log("Class created:", constructor.name);
+}
+
+@Logger
+class Person {
+  constructor() {
+    console.log("Person created");
+  }
+}
+// Output 
+Class created: Person
+
+2. Property Decorator
+######################
+-> Used to observe or modify a property in a class .
+Eg: 
+function LogProperty(target: any, propertyKey: string) {
+  console.log(`Property decorated: ${propertyKey}`);
+}
+
+class Car {
+  @LogProperty
+  model: string;
+
+  constructor(model: string) {
+    this.model = model;
+  }
+}
+// Output
+Property decorated: model
+
+3. Method Decorator
+####################
+-> Used to observe ,modify or replace a method.
+Eg: 
+function LogMethod(target: any, methodName: string, descriptor: PropertyDescriptor) {
+  const original = descriptor.value;
+
+  descriptor.value = function (...args: any[]) {
+    console.log(`Method called: ${methodName} with args:`, args);
+    return original.apply(this, args);
+  };
+}
+
+class Calculator {
+  @LogMethod
+  add(a: number, b: number) {
+    return a + b;
+  }
+} When add(2,3) is called output will be
+//Output
+Method called: add with args: [2, 3]
+
+4. Accessor Decorator
+######################
+-> Used on getters and setters.
+Eg: 
+function LogAccessor(target: any, name: string, descriptor: PropertyDescriptor) {
+  console.log(`Accessor decorated: ${name}`);
+}
+
+class User {
+  private _name: string = "John";
+
+  @LogAccessor
+  get name() {
+    return this._name;
+  }
+}
+
+5. Parameter Decorator
+#######################
+-> Used to access metadata about parameters 
+Eg: 
+function LogParameter(target: any, methodName: string, parameterIndex: number) {
+  console.log(`Parameter in method ${methodName} at index ${parameterIndex} decorated.`);
+}
+
+class Message {
+  greet(@LogParameter message: string) {
+    console.log(message);
+  }
+}
+
+#######################
+⚠️ Enabling Decorators
+#######################
+You must enable them in tsconfig.json:
+Ex: 
+{
+  "experimentalDecorators": true,
+  "emitDecoratorMetadata": true
+}
+
+##########################################################################
+🎯 Summary Table
+##########################################################################
+| Decorator Type | Target         | Arguments Received                   |
+| -------------- | -------------- | ------------------------------------ |
+| Class          | Class          | `constructor: Function`              |
+| Property       | Class property | `target: any, propertyKey: string`   |
+| Method         | Class method   | `target, methodName, descriptor`     |
+| Accessor       | Getter/Setter  | `target, accessorName, descriptor`   |
+| Parameter      | Method Param   | `target, methodName, parameterIndex` |
+##########################################################################
