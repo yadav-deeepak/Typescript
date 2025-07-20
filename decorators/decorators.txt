@@ -128,3 +128,152 @@ Ex:
 | Accessor       | Getter/Setter  | `target, accessorName, descriptor`   |
 | Parameter      | Method Param   | `target, methodName, parameterIndex` |
 ##########################################################################
+
+####################################
+# What is decorator factory in TS ?
+#################################### 
+-> A decorator factory is a function that returns a decorator function.
+-> This allows you to pass parameters to you decorator making it configurable or dynamic.
+
+#######################################
+# Why do we use a decorator factory ?
+#######################################
+-> Without a factory :
+   -> You cant pass any values to your decorator 
+-> With factory : 
+   -> You can create reusable decorators that behave differently based on input values 
+Syntax: 
+function DecoratorFactory(param: any) {
+  return function (target: any) {
+    // Actual decorator logic
+  };
+}
+// You use it like this: 
+@DecoratorFactory("Hello")
+class MyClass {}
+
+Example: 
+function Logger(message: string) {
+  return function (constructor: Function) {
+    console.log(`${message} - ${constructor.name}`);
+  };
+}
+
+@Logger("Creating class")
+class Student {
+  constructor() {
+    console.log("Student instance created");
+  }
+}
+// Output: 
+Creating class - Student
+Student instance created
+
+################################################################################
+🧾 Summary
+################################################################################
+| Concept           | Explanation                                              |
+| ----------------- | -------------------------------------------------------- |
+| Decorator Factory | A function that returns a decorator                      |
+| Purpose           | To make decorators configurable                          |
+| Syntax            | `function factory(...args) { return function (...) {} }` |
+| Use cases         | Logging, permissions, metadata, conditional behavior     |
+################################################################################
+
+############################
+# Using multiple Decorators 
+############################
+-> In TS you can apply multiple decorators to a class, method ,property or parameter by stacking them one after another.
+-> Each decorator is applied in a specific order and may wrap or modify the target differently.
+✅ Syntax: 
+@FirstDecorator
+@SecondDecorator
+class MyClass {}
+// This is equivalent to : 
+MyClass = FirstDecorator(SecondDecorator(MyClass));
+-> So decorators are applied from bottom to top(or right to left if inline).
+
+Example:// Multiple class decorator 
+function First() {
+  return function (constructor: Function) {
+    console.log("First decorator executed");
+  };
+}
+
+function Second() {
+  return function (constructor: Function) {
+    console.log("Second decorator executed");
+  };
+}
+
+@First()
+@Second()
+class TestClass {}
+
+// Output
+Second decorator executed
+First decorator executed
+
+Example2: // Multiple method decorator
+function Log1(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+  console.log("Log1 applied on:", propertyKey);
+}
+
+function Log2(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+  console.log("Log2 applied on:", propertyKey);
+}
+
+class Math {
+  @Log1
+  @Log2
+  calculate() {
+    return 2 + 2;
+  }
+}
+// Output 
+Log2 applied on: calculate  
+Log1 applied on: calculate
+
+########
+# Note:
+########
+-> Each decorator can modify or replace the target 
+-> If you are using angular this is common: 
+####################################
+# Execution Order summary 
+####################################
+-> There are two phases involved: 
+1. Decorator factory execution (Top to bottom)
+##############################################
+-> This is when the outer function (ie @Decorator()) are called to produce decorators 
+➡️ Order: Top to Bottom
+
+2. Decorator function execution (Bottom to Top)
+-> This is when the actual decorator functions (returned by those factories) are applied to the target.
+➡️ Order: Bottom to Top
+
+Example: 
+function First() {
+  console.log("First factory evaluated");
+  return function (target: any) {
+    console.log("First decorator executed");
+  };
+}
+
+function Second() {
+  console.log("Second factory evaluated");
+  return function (target: any) {
+    console.log("Second decorator executed");
+  };
+}
+
+@First()
+@Second()
+class Example {}
+
+// Output
+First factory evaluated
+Second factory evaluated
+Second decorator executed
+First decorator executed
+
