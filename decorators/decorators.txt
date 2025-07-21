@@ -277,3 +277,55 @@ Second factory evaluated
 Second decorator executed
 First decorator executed
 
+#######################
+# Property Decorator  
+#######################
+-> It is a special kind of decorator that is applied to class  properties .
+-> It allows you to observe modify or annotate the property of a class at design time(ie; when the class is defined not when its instantiated).
+✅ Syntax of Property Decorator
+function PropertyDecorator(target: Object, propertyKey: string | symbol) {
+    // logic goes here
+}
+class Example {
+  @PropertyDecorator
+  myProperty: string;
+}
+
+# Parameters of property decorator function 
+############################################
+1. target : 
+-> For static properties: it is the constructor function of the class
+-> For instance properties: it is the prototype of the class 
+
+2. propertyKey : 
+-> The name of the property being decorated (as a string or symbol).
+
+Eg: 
+function LogProperty(target: any, propertyKey: string) {
+    let value = target[propertyKey];
+
+    const getter = () => {
+        console.log(`Getting value of ${propertyKey}: ${value}`);
+        return value;
+    };
+
+    const setter = (newValue: any) => {
+        console.log(`Setting value of ${propertyKey} to: ${newValue}`);
+        value = newValue;
+    };
+
+    Object.defineProperty(target, propertyKey, {
+        get: getter,
+        set: setter,
+        enumerable: true,
+        configurable: true
+    });
+}
+
+class Person {
+    @LogProperty
+    name: string = "John";
+}
+const p = new Person();
+p.name = "Alice"; // Logs: Setting value of name to: Alice
+console.log(p.name); // Logs: Getting value of name: Alice
