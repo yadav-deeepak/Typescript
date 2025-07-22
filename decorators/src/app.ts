@@ -50,12 +50,28 @@
  * Property decorator 
  */
 
-function Capitalize(){
-    console.log('Capitalize Decorator Called');
+function Capitalize(target: any, propertyKey: string): any{
+    // console.log('Capitalize Decorator Called');
+    // console.log("PROPERTY KEY: " + propertyKey); 
+    // console.log("Target: ", target);
+    let value: string;
+    
+    const getter = function(){
+        return value.charAt(0).toUpperCase() + value.slice(1);
+    }
+
+    const setter = function(newValue: string){
+        value = newValue.toLowerCase();
+
+    }
+    return {
+        get: getter,
+        set: setter
+    }
 }
 
 class Product{
-    
+    @Capitalize
     name: string;
     price: number;
 
@@ -64,3 +80,7 @@ class Product{
         this.price = price;
     }
 }
+
+const p = new Product('samsung', 2400);
+// Whenever we create an object and pass the name I want that the names first letter to be a capital letter so for this we are gonna use decorator.
+console.log(p);

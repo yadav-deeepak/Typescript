@@ -329,3 +329,33 @@ class Person {
 const p = new Person();
 p.name = "Alice"; // Logs: Setting value of name to: Alice
 console.log(p.name); // Logs: Getting value of name: Alice
+
+## Important Notes :
+#####################
+-> Property decorators dont receive the property value directly .
+-> You cant modify the initializer of the property directly using a property decorator 
+-> If you wanna intercept or modify behaviour use object.defineProperty inside the decorator 
+-> Property decorators can be useful in ORMs, form validation, metadata generation etc.
+
+# Common use cases: 
+###################
+-> Logging property access or updates 
+-> Attaching metadata using Reflect.metadata 
+-> Auto binding 
+-> Marking properties as required in validation libraries 
+
+##############################
+📌 Summary (for quick notes):
+##############################
+| Aspect           | Detail                                          |
+| ---------------- | ----------------------------------------------- |
+| Applies to       | Class properties (not methods or parameters)    |
+| Parameters       | `(target, propertyKey)`                         |
+| Common use cases | Logging, validation, metadata                   |
+| Limitation       | Cannot access or modify property value directly |
+| Helper library   | Often used with `reflect-metadata`              |
+| Runs             | When the class is **defined**, not instantiated |
+
+######################
+# Accessor Decorator #
+######################
