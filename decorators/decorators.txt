@@ -359,3 +359,148 @@ console.log(p.name); // Logs: Getting value of name: Alice
 ######################
 # Accessor Decorator #
 ######################
+-> An accessor decorator is a special function that is applied to a getter or setter method of a class property  
+Syntax: 
+function MyDecorator(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+  console.log("Accessor Decorator called on:", propertyKey);
+}
+
+class Example {
+  private _value: number = 0;
+
+  @MyDecorator
+  get value() {
+    return this._value;
+  }
+
+  set value(val: number) {
+    this._value = val;
+  }
+}
+
+# Parameters of accessor decorator 
+###########################################################
+| Parameter     | Meaning                                 |
+| ------------- | --------------------------------------- |
+| `target`      | The prototype of the class              |
+| `propertyKey` | The name of the accessor property       |
+| `descriptor`  | The property descriptor of the accessor |
+###########################################################
+
+# Use cases: 
+############
+-> To log access to a property 
+-> To validate values before returning or setting.
+-> To modify the behaviour of the getter/setter 
+
+Example: With logging 
+function LogAccessor(target: any, key: string, descriptor: PropertyDescriptor) {
+  const originalGet = descriptor.get;
+  descriptor.get = function () {
+    console.log(`Getter for ${key} called`);
+    return originalGet?.call(this);
+  };
+}
+
+class Person {
+  private _name = "Deepak";
+
+  @LogAccessor
+  get name() {
+    return this._name;
+  }
+}
+// Output  (pgsql) 
+Getter for name called
+
+# Notes: 
+########
+-> Accessor decorators can only be used with get or set methods, not with normal methods or properties 
+-> They can be used to modify the descriptor , which controls the behaviour of the accessor
+
+##################
+# Method Decorator 
+##################
+-> It is applied to a class method to modify or observe its behavior (eg: logging,security ,timing)
+
+Syntax: 
+function MyMethodDecorator(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+  console.log("Method:", propertyKey);
+}
+
+// Usage: 
+class Example {
+  @MyMethodDecorator
+  greet() {
+    console.log("Hello!");
+  }
+}
+
+# Parameters of a method decorator 
+#####################################################################
+| Parameter     | Description                                       |
+| ------------- | ------------------------------------------------- |
+| `target`      | The class prototype                               |
+| `propertyKey` | The name of the method                            |
+| `descriptor`  | The method's PropertyDescriptor (can be modified) |
+#####################################################################
+
+# Use cases:
+############
+-> Logging method calls 
+-> Measuring execution time 
+-> Authorization checks 
+-> overriding original method 
+
+Example : With logging 
+function LogMethod(target: any, key: string, descriptor: PropertyDescriptor) {
+  const original = descriptor.value;
+  descriptor.value = function (...args: any[]) {
+    console.log(`Calling ${key} with`, args);
+    return original.apply(this, args);
+  };
+}
+
+class MathOps {
+  @LogMethod
+  add(a: number, b: number) {
+    return a + b;
+  }
+}
+
+#########################
+# Parameter Decorator 
+#########################
+-> It is applied to a method parameter to extract metadata or perform checks 
+
+Syntax: 
+function MyParamDecorator(target: any, propertyKey: string, parameterIndex: number) {
+  console.log(`Parameter at position ${parameterIndex} in method ${propertyKey}`);
+}
+
+// Usage  
+class Example {
+  greet(@MyParamDecorator name: string) {
+    console.log("Hello", name);
+  }
+}
+
+# Parameters of parameter decorator
+######################################################################
+| Parameter        | Description                                     |
+| ---------------- | ----------------------------------------------- |
+| `target`         | The prototype of the class                      |
+| `propertyKey`    | The name of the method                          |
+| `parameterIndex` | The index of the parameter in the argument list |
+######################################################################
+
+# Use cases : 
+############
+-> Validating input parameters 
+-> Creating custom metadata for parameters 
+-> Dependency injection systems 
+
+# Important Points :
+####################
+-> Parameter decorators cant modify parameter values 
+-> They are mainly used with metadata (eg : in frameworks like NestJS)

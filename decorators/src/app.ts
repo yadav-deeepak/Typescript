@@ -50,6 +50,44 @@
  * Property decorator 
  */
 
+// function Capitalize(target: any, propertyKey: string): any{
+//     // console.log('Capitalize Decorator Called');
+//     // console.log("PROPERTY KEY: " + propertyKey); 
+//     // console.log("Target: ", target);
+//     let value: string;
+    
+//     const getter = function(){
+//         return value.charAt(0).toUpperCase() + value.slice(1);
+//     }
+
+//     const setter = function(newValue: string){
+//         value = newValue.toLowerCase();
+
+//     }
+//     return {
+//         get: getter,
+//         set: setter
+//     }
+// }
+
+// class Product{
+//     @Capitalize
+//     name: string;
+//     price: number;
+
+//     constructor(name: string, price: number){
+//         this.name = name;
+//         this.price = price;
+//     }
+// }
+
+// const p = new Product('samsung', 2400);
+// // Whenever we create an object and pass the name I want that the names first letter to be a capital letter so for this we are gonna use decorator.
+// console.log(p);
+
+/**
+ * Accessor Decorator 
+ */
 function Capitalize(target: any, propertyKey: string): any{
     // console.log('Capitalize Decorator Called');
     // console.log("PROPERTY KEY: " + propertyKey); 
@@ -70,17 +108,53 @@ function Capitalize(target: any, propertyKey: string): any{
     }
 }
 
+function AccessLogger(target: any, name: string, descriptor: PropertyDescriptor){
+    const getter = descriptor.get;
+    const setter = descriptor.set;
+
+    descriptor.get = function (){
+        console.log(`Accessing value for property ${name}...`);
+        if(getter){
+            return getter.call(this);
+        }
+        return undefined;
+    }
+    descriptor.set = function(value: number){
+        console.log(`Setting value for property ${name}...`);
+        if(setter){
+            setter.call(this, value);
+        }
+    }    
+    return descriptor;
+
+}
+
 class Product{
     @Capitalize
     name: string;
-    price: number;
+
+    private _price: number;
+
+    @AccessLogger
+    get price(){
+        return this._price;
+    }
+
+    set price(value: number){
+        if(value>0){
+            this._price = value;
+        }
+        else{
+            throw new Error('Price should be greater than 0');
+        }
+    }
 
     constructor(name: string, price: number){
-        this.name = name;
-        this.price = price;
+        this.name = name; 
+        this._price = price;
     }
 }
 
-const p = new Product('samsung', 2400);
-// Whenever we create an object and pass the name I want that the names first letter to be a capital letter so for this we are gonna use decorator.
-console.log(p);
+const p = new Product('Apple', 2400);
+p.price = 3000;
+console.log(p.price);
