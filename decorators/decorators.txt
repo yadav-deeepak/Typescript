@@ -504,3 +504,44 @@ class Example {
 ####################
 -> Parameter decorators cant modify parameter values 
 -> They are mainly used with metadata (eg : in frameworks like NestJS)
+
+# When is a decorator executed in TypeScript?
+-> A decorator is executed when the class or its member is defined not when it is instantiated or used .
+-> Decorators run at runtime during class declaration , not during object creation
+
+# Execution Timing 
+###############################################################################
+| Type of Decorator       | When it is executed                               |
+| ----------------------- | ------------------------------------------------- |
+| **Class Decorator**     | When the class is defined                         |
+| **Method Decorator**    | When the method is defined (not when it's called) |
+| **Property Decorator**  | When the class is defined                         |
+| **Accessor Decorator**  | When the class is defined                         |
+| **Parameter Decorator** | When the class is defined                         |
+###############################################################################
+
+Example: 
+function LogClass(constructor: Function) {
+  console.log("Class Decorator Executed");
+}
+
+@LogClass
+class MyClass {
+  constructor() {
+    console.log("Constructor Executed");
+  }
+}
+// Output 
+Class Decorator Executed
+Constructor Executed
+
+-> This shows : 
+   -> Decorators runs when class is defined 
+   -> Constructor runs when object is created 
+
+# Key points to remember :
+###########################
+-> Decorators are like metadata functions 
+-> They execute once when the class /method/property is defined.
+-> They do not wait for object creation or method call 
+-> They are useful for adding logic ,modifying behaviour or annotating classes /members .
