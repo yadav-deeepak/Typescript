@@ -25,6 +25,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 // function Template(template: string, elementId: string){
 //     console.log('Template factory function');
 //     return function(target: any){
@@ -85,66 +88,94 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Accessor Decorator
  */
-function Capitalize(target, propertyKey) {
-    // console.log('Capitalize Decorator Called');
-    // console.log("PROPERTY KEY: " + propertyKey); 
-    // console.log("Target: ", target);
-    let value;
-    const getter = function () {
-        return value.charAt(0).toUpperCase() + value.slice(1);
-    };
-    const setter = function (newValue) {
-        value = newValue.toLowerCase();
-    };
-    return {
-        get: getter,
-        set: setter
-    };
+// function Capitalize(target: any, propertyKey: string): any{
+//     // console.log('Capitalize Decorator Called');
+//     // console.log("PROPERTY KEY: " + propertyKey); 
+//     // console.log("Target: ", target);
+//     let value: string;
+//     const getter = function(){
+//         return value.charAt(0).toUpperCase() + value.slice(1);
+//     }
+//     const setter = function(newValue: string){
+//         value = newValue.toLowerCase();
+//     }
+//     return {
+//         get: getter,
+//         set: setter
+//     }
+// }
+// function AccessLogger(target: any, name: string, descriptor: PropertyDescriptor){
+//     const getter = descriptor.get;
+//     const setter = descriptor.set;
+//     descriptor.get = function (){
+//         console.log(`Accessing value for property ${name}...`);
+//         if(getter){
+//             return getter.call(this);
+//         }
+//         return undefined;
+//     }
+//     descriptor.set = function(value: number){
+//         console.log(`Setting value for property ${name}...`);
+//         if(setter){
+//             setter.call(this, value);
+//         }
+//     }    
+//     return descriptor;
+// }
+// class Product{
+//     @Capitalize
+//     name: string;
+//     private _price: number;
+//     @AccessLogger
+//     get price(){
+//         return this._price;
+//     }
+//     set price(value: number){
+//         if(value>0){
+//             this._price = value;
+//         }
+//         else{
+//             throw new Error('Price should be greater than 0');
+//         }
+//     }
+//     constructor(name: string, price: number){
+//         this.name = name; 
+//         this._price = price;
+//     }
+// }
+// const p = new Product('Apple', 2400);
+// p.price = 3000;
+// console.log(p.price);
+/**
+ * Method and Parameter Decorator
+ */
+function param(target, paramName, index) {
+    console.log('Param decorator called');
+    console.log('Target: ', target);
+    console.log('Parameter Name: ' + paramName);
+    console.log('Index: ' + 0);
 }
-function AccessLogger(target, name, descriptor) {
-    const getter = descriptor.get;
-    const setter = descriptor.set;
-    descriptor.get = function () {
-        console.log(`Accessing value for property ${name}...`);
-        if (getter) {
-            return getter.call(this);
-        }
-        return undefined;
-    };
-    descriptor.set = function (value) {
-        console.log(`Setting value for property ${name}...`);
-        if (setter) {
-            setter.call(this, value);
-        }
-    };
-    return descriptor;
+function Logger(target, methodName, descriptor) {
+    console.log('Logger decorator called!');
+    console.log('Target: ', target);
+    console.log('MethodName: ' + methodName);
+    console.log('Property Descriptor: ', descriptor);
 }
-class Product {
-    get price() {
-        return this._price;
+class Person {
+    constructor(n) {
+        this.name = n;
     }
-    set price(value) {
-        if (value > 0) {
-            this._price = value;
-        }
-        else {
-            throw new Error('Price should be greater than 0');
-        }
-    }
-    constructor(name, price) {
-        this.name = name;
-        this._price = price;
+    calculateAge(dob) {
+        // calculate date of birth
     }
 }
 __decorate([
-    Capitalize,
-    __metadata("design:type", String)
-], Product.prototype, "name", void 0);
-__decorate([
-    AccessLogger,
-    __metadata("design:type", Number),
-    __metadata("design:paramtypes", [Number])
-], Product.prototype, "price", null);
-const p = new Product('Apple', 2400);
-p.price = 3000;
-console.log(p.price);
+    Logger,
+    __param(0, param),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], Person.prototype, "calculateAge", null);
+// So here first the parameter decorator is called  and after that the method decorator is called
+const p = new Person('John');
+p.calculateAge('06-15-1998');

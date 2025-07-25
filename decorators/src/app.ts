@@ -88,73 +88,109 @@
 /**
  * Accessor Decorator 
  */
-function Capitalize(target: any, propertyKey: string): any{
-    // console.log('Capitalize Decorator Called');
-    // console.log("PROPERTY KEY: " + propertyKey); 
-    // console.log("Target: ", target);
-    let value: string;
+// function Capitalize(target: any, propertyKey: string): any{
+//     // console.log('Capitalize Decorator Called');
+//     // console.log("PROPERTY KEY: " + propertyKey); 
+//     // console.log("Target: ", target);
+//     let value: string;
     
-    const getter = function(){
-        return value.charAt(0).toUpperCase() + value.slice(1);
-    }
+//     const getter = function(){
+//         return value.charAt(0).toUpperCase() + value.slice(1);
+//     }
 
-    const setter = function(newValue: string){
-        value = newValue.toLowerCase();
+//     const setter = function(newValue: string){
+//         value = newValue.toLowerCase();
 
-    }
-    return {
-        get: getter,
-        set: setter
-    }
+//     }
+//     return {
+//         get: getter,
+//         set: setter
+//     }
+// }
+
+// function AccessLogger(target: any, name: string, descriptor: PropertyDescriptor){
+//     const getter = descriptor.get;
+//     const setter = descriptor.set;
+
+//     descriptor.get = function (){
+//         console.log(`Accessing value for property ${name}...`);
+//         if(getter){
+//             return getter.call(this);
+//         }
+//         return undefined;
+//     }
+//     descriptor.set = function(value: number){
+//         console.log(`Setting value for property ${name}...`);
+//         if(setter){
+//             setter.call(this, value);
+//         }
+//     }    
+//     return descriptor;
+
+// }
+
+// class Product{
+//     @Capitalize
+//     name: string;
+
+//     private _price: number;
+
+//     @AccessLogger
+//     get price(){
+//         return this._price;
+//     }
+
+//     set price(value: number){
+//         if(value>0){
+//             this._price = value;
+//         }
+//         else{
+//             throw new Error('Price should be greater than 0');
+//         }
+//     }
+
+//     constructor(name: string, price: number){
+//         this.name = name; 
+//         this._price = price;
+//     }
+// }
+
+// const p = new Product('Apple', 2400);
+// p.price = 3000;
+// console.log(p.price);
+
+/**
+ * Method and Parameter Decorator 
+ */
+function param(target: any, paramName: string, index: number){
+    console.log('Param decorator called');
+    console.log('Target: ', target);
+    console.log('Parameter Name: '+ paramName);
+    console.log('Index: '+ 0);
+
 }
 
-function AccessLogger(target: any, name: string, descriptor: PropertyDescriptor){
-    const getter = descriptor.get;
-    const setter = descriptor.set;
-
-    descriptor.get = function (){
-        console.log(`Accessing value for property ${name}...`);
-        if(getter){
-            return getter.call(this);
-        }
-        return undefined;
-    }
-    descriptor.set = function(value: number){
-        console.log(`Setting value for property ${name}...`);
-        if(setter){
-            setter.call(this, value);
-        }
-    }    
-    return descriptor;
+function Logger(target: any, methodName: string, descriptor: PropertyDescriptor){
+    console.log('Logger decorator called!');
+    console.log('Target: ',target);
+    console.log('MethodName: '+ methodName);
+    console.log('Property Descriptor: ', descriptor);
 
 }
 
-class Product{
-    @Capitalize
+class Person{
     name: string;
 
-    private _price: number;
-
-    @AccessLogger
-    get price(){
-        return this._price;
+    constructor(n: string){
+        this.name = n;
     }
 
-    set price(value: number){
-        if(value>0){
-            this._price = value;
-        }
-        else{
-            throw new Error('Price should be greater than 0');
-        }
-    }
-
-    constructor(name: string, price: number){
-        this.name = name; 
-        this._price = price;
+    @Logger
+    calculateAge(@param dob: string){
+        // calculate date of birth
     }
 }
+// So here first the parameter decorator is called  and after that the method decorator is called
 
-const p = new Product('Apple', 2400);
-p.price = 3000;
-console.log(p.price);
+const p = new Person('John');
+p.calculateAge('06-15-1998');
