@@ -531,6 +531,7 @@ class MyClass {
     console.log("Constructor Executed");
   }
 }
+const p = new MyClass();
 // Output 
 Class Decorator Executed
 Constructor Executed
@@ -545,3 +546,41 @@ Constructor Executed
 -> They execute once when the class /method/property is defined.
 -> They do not wait for object creation or method call 
 -> They are useful for adding logic ,modifying behaviour or annotating classes /members .
+
+Eg: 
+function CLS_DECORATOR(target: any){
+    console.log('CLASS DECORATOR CALLED');
+}
+
+function Prop_Decorator(target: any, propertyKey: string): any{
+    console.log('PROPERTY DECORATOR CALLED');
+}
+
+function ACC_DECORATOR(target: any,name: string, descriptor: PropertyDescriptor){
+    console.log('ACCESSOR DECORATOR CALLED!');
+}
+
+function PARAM_DECORATOR(target: any, paramName: string, index: number){
+    console.log('PARAMETER DECORATOR CALLED');
+}
+
+function METH_DECORATOR(target: any, methodName: string, descriptor: PropertyDescriptor){
+    console.log('METHOD DECORATOR CALLED!');
+}
+
+@CLS_DECORATOR
+class Person{
+    @Prop_Decorator
+    name: string;
+
+    constructor(n: string){
+        this.name = n;
+    }
+
+    @METH_DECORATOR
+    calculateAge(@PARAM_DECORATOR dob: string){
+        //calculate the age
+    }
+}
+// When we use multiple decorators on class then the decorator execution will be bottom up
+// When we use multiple decorators on the property then the execution will be top to bottom

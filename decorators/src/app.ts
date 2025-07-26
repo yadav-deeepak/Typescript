@@ -162,35 +162,75 @@
 /**
  * Method and Parameter Decorator 
  */
-function param(target: any, paramName: string, index: number){
-    console.log('Param decorator called');
-    console.log('Target: ', target);
-    console.log('Parameter Name: '+ paramName);
-    console.log('Index: '+ 0);
+// function param(target: any, paramName: string, index: number){
+//     console.log('Param decorator called');
+//     console.log('Target: ', target);
+//     console.log('Parameter Name: '+ paramName);
+//     console.log('Index: '+ 0);
 
+// }
+
+// function Logger(target: any, methodName: string, descriptor: PropertyDescriptor){
+//     console.log('Logger decorator called!');
+//     console.log('Target: ',target);
+//     console.log('MethodName: '+ methodName);
+//     console.log('Property Descriptor: ', descriptor);
+
+// }
+
+// class Person{
+//     name: string;
+
+//     constructor(n: string){
+//         this.name = n;
+//     }
+
+//     @Logger
+//     calculateAge(@param dob: string){
+//         // calculate date of birth
+//     }
+// }
+// // So here first the parameter decorator is called  and after that the method decorator is called
+
+// const p = new Person('John');
+// p.calculateAge('06-15-1998');
+
+/**
+ * When a decorator is executed 
+ */
+function CLS_DECORATOR(target: any){
+    console.log('CLASS DECORATOR CALLED');
 }
 
-function Logger(target: any, methodName: string, descriptor: PropertyDescriptor){
-    console.log('Logger decorator called!');
-    console.log('Target: ',target);
-    console.log('MethodName: '+ methodName);
-    console.log('Property Descriptor: ', descriptor);
-
+function Prop_Decorator(target: any, propertyKey: string): any{
+    console.log('PROPERTY DECORATOR CALLED');
 }
 
+function ACC_DECORATOR(target: any,name: string, descriptor: PropertyDescriptor){
+    console.log('ACCESSOR DECORATOR CALLED!');
+}
+
+function PARAM_DECORATOR(target: any, paramName: string, index: number){
+    console.log('PARAMETER DECORATOR CALLED');
+}
+
+function METH_DECORATOR(target: any, methodName: string, descriptor: PropertyDescriptor){
+    console.log('METHOD DECORATOR CALLED!');
+}
+
+@CLS_DECORATOR
 class Person{
+    @Prop_Decorator
     name: string;
 
     constructor(n: string){
         this.name = n;
     }
 
-    @Logger
-    calculateAge(@param dob: string){
-        // calculate date of birth
+    @METH_DECORATOR
+    calculateAge(@PARAM_DECORATOR dob: string){
+        //calculate the age
     }
 }
-// So here first the parameter decorator is called  and after that the method decorator is called
-
-const p = new Person('John');
-p.calculateAge('06-15-1998');
+// When we use multiple decorators on class then the decorator execution will be bottom up
+// When we use multiple decorators on the property then the execution will be top to bottom
