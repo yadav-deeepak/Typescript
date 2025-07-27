@@ -584,3 +584,7 @@ class Person{
 }
 // When we use multiple decorators on class then the decorator execution will be bottom up
 // When we use multiple decorators on the property then the execution will be top to bottom
+
+#######################################
+# Returning a class from the decorator 
+#######################################
