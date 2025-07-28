@@ -25,9 +25,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 // function Template(template: string, elementId: string){
 //     console.log('Template factory function');
 //     return function(target: any){
@@ -177,43 +174,61 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 /**
  * When a decorator is executed
  */
-function CLS_DECORATOR(target) {
-    console.log('CLASS DECORATOR CALLED');
+// function CLS_DECORATOR(target: any){
+//     console.log('CLASS DECORATOR CALLED');
+// }
+// function Prop_Decorator(target: any, propertyKey: string): any{
+//     console.log('PROPERTY DECORATOR CALLED');
+// }
+// function ACC_DECORATOR(target: any,name: string, descriptor: PropertyDescriptor){
+//     console.log('ACCESSOR DECORATOR CALLED!');
+// }
+// function PARAM_DECORATOR(target: any, paramName: string, index: number){
+//     console.log('PARAMETER DECORATOR CALLED');
+// }
+// function METH_DECORATOR(target: any, methodName: string, descriptor: PropertyDescriptor){
+//     console.log('METHOD DECORATOR CALLED!');
+// }
+// @CLS_DECORATOR
+// class Person{
+//     @Prop_Decorator
+//     name: string;
+//     constructor(n: string){
+//         this.name = n;
+//     }
+//     @METH_DECORATOR
+//     calculateAge(@PARAM_DECORATOR dob: string){
+//         //calculate the age
+//     }
+// }
+// When we use multiple decorators on class then the decorator execution will be bottom up
+// When we use multiple decorators on the property then the execution will be top to bottom
+/**
+ * Returning a class from a decorator
+ */
+// In a class decorator we can modify that class and return that class 
+// Inside this class decorator we are going to modify our Person class.
+// We are going to create new class and this class must extend the Person class in place of person we can use target because as we have use this Logger decorator on the Person class so for this target we are going to receive the Person class .
+// If we specify the target as funtion that doesnt mean that it is a constructor function so we will specify the target type as new (...args: any) => {}
+function Logger(target) {
+    class LogginClass extends target {
+        constructor(...args) {
+            super(...args);
+            console.log('Creating a new LoggingClass Instace...');
+        }
+    }
+    LogginClass.company = 'Google';
+    return LogginClass;
 }
-function Prop_Decorator(target, propertyKey) {
-    console.log('PROPERTY DECORATOR CALLED');
-}
-function ACC_DECORATOR(target, name, descriptor) {
-    console.log('ACCESSOR DECORATOR CALLED!');
-}
-function PARAM_DECORATOR(target, paramName, index) {
-    console.log('PARAMETER DECORATOR CALLED');
-}
-function METH_DECORATOR(target, methodName, descriptor) {
-    console.log('METHOD DECORATOR CALLED!');
-}
+// This Logger decorator will return LogginClass and since we are using this Logger decorator on the Person class so it will replace the Person class with the LogginClass
 let Person = class Person {
     constructor(n) {
         this.name = n;
     }
-    calculateAge(dob) {
-        //calculate the age
-    }
 };
-__decorate([
-    Prop_Decorator,
-    __metadata("design:type", String)
-], Person.prototype, "name", void 0);
-__decorate([
-    METH_DECORATOR,
-    __param(0, PARAM_DECORATOR),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], Person.prototype, "calculateAge", null);
 Person = __decorate([
-    CLS_DECORATOR,
+    Logger,
     __metadata("design:paramtypes", [String])
 ], Person);
-// When we use multiple decorators on class then the decorator execution will be bottom up
-// When we use multiple decorators on the property then the execution will be top to bottom
+// const p = new Person('John');
+// So when we create the object of the class then we can see that it will print the message as creating 

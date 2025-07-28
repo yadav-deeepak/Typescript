@@ -588,3 +588,60 @@ class Person{
 #######################################
 # Returning a class from the decorator 
 #######################################
+-> A class decorator can replace or extend the original class by returning a new constructor 
+-> This allows you to modify or enhance class behaivour without changing the original class code.
+
+Syntax of a class decorator :
+-----------------------------
+function MyDecorator<T extends { new (...args: any[]): {} }>(constructor: T) {
+  return class extends constructor {
+    newProperty = "Injected Property";
+    existingProperty = "Overridden Value";
+  };
+}
+Example: Returning a modified class 
+function AddProps<T extends { new (...args: any[]): {} }>(constructor: T) {
+  return class extends constructor {
+    role = "admin";
+    greet() {
+      return `Hello, ${this.role}`;
+    }
+  };
+}
+
+@AddProps
+class User {
+  name = "Deepak";
+  constructor() {
+    console.log("Original User constructor");
+  }
+}
+
+const user = new User() as any;
+console.log(user.name);   // Deepak
+console.log(user.role);   // admin
+console.log(user.greet()); // Hello, admin
+
+// Explaination
+############################################################################
+| Step | Description                                                       |
+| ---- | ----------------------------------------------------------------- |
+| 1    | `@AddProps` is a class decorator                                  |
+| 2    | It takes the original `User` class as input                       |
+| 3    | It returns a **new class** that **extends `User`**                |
+| 4    | The new class adds a `role` property and a `greet()` method       |
+| 5    | When you create an object, it behaves like the new extended class |
+############################################################################
+
+# Use Cases: 
+############
+-> Add logging/debugging behaviour
+-> Attach metadata or tracking fields 
+-> Apply access control or roles
+-> Modify or override existing behaviour.
+
+# Rules to remember
+###################
+-> The returned class must be compatible with the original 
+-> Use T extends {new(...args: any[]): {}} to preserve constructor typing.
+-> Only class decorators can return a constructor method/property decorator cannot.

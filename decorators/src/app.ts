@@ -198,39 +198,73 @@
 /**
  * When a decorator is executed 
  */
-function CLS_DECORATOR(target: any){
-    console.log('CLASS DECORATOR CALLED');
-}
+// function CLS_DECORATOR(target: any){
+//     console.log('CLASS DECORATOR CALLED');
+// }
 
-function Prop_Decorator(target: any, propertyKey: string): any{
-    console.log('PROPERTY DECORATOR CALLED');
-}
+// function Prop_Decorator(target: any, propertyKey: string): any{
+//     console.log('PROPERTY DECORATOR CALLED');
+// }
 
-function ACC_DECORATOR(target: any,name: string, descriptor: PropertyDescriptor){
-    console.log('ACCESSOR DECORATOR CALLED!');
-}
+// function ACC_DECORATOR(target: any,name: string, descriptor: PropertyDescriptor){
+//     console.log('ACCESSOR DECORATOR CALLED!');
+// }
 
-function PARAM_DECORATOR(target: any, paramName: string, index: number){
-    console.log('PARAMETER DECORATOR CALLED');
-}
+// function PARAM_DECORATOR(target: any, paramName: string, index: number){
+//     console.log('PARAMETER DECORATOR CALLED');
+// }
 
-function METH_DECORATOR(target: any, methodName: string, descriptor: PropertyDescriptor){
-    console.log('METHOD DECORATOR CALLED!');
-}
+// function METH_DECORATOR(target: any, methodName: string, descriptor: PropertyDescriptor){
+//     console.log('METHOD DECORATOR CALLED!');
+// }
 
-@CLS_DECORATOR
+// @CLS_DECORATOR
+// class Person{
+//     @Prop_Decorator
+//     name: string;
+
+//     constructor(n: string){
+//         this.name = n;
+//     }
+
+//     @METH_DECORATOR
+//     calculateAge(@PARAM_DECORATOR dob: string){
+//         //calculate the age
+//     }
+// }
+// When we use multiple decorators on class then the decorator execution will be bottom up
+// When we use multiple decorators on the property then the execution will be top to bottom
+
+/**
+ * Returning a class from a decorator
+ */
+// In a class decorator we can modify that class and return that class 
+
+// Inside this class decorator we are going to modify our Person class.
+// We are going to create new class and this class must extend the Person class in place of person we can use target because as we have use this Logger decorator on the Person class so for this target we are going to receive the Person class .
+// If we specify the target as funtion that doesnt mean that it is a constructor function so we will specify the target type as new (...args: any) => {}
+
+function Logger(target: new (...args: any[]) => {}): any{
+    class LogginClass extends target{
+        static company: string = 'Google';
+        constructor(...args: any[]){
+            super(...args);
+            console.log('Creating a new LoggingClass Instace...')
+        }
+
+    }
+    return LogginClass;
+}
+// This Logger decorator will return LogginClass and since we are using this Logger decorator on the Person class so it will replace the Person class with the LogginClass
+
+@Logger
 class Person{
-    @Prop_Decorator
     name: string;
 
     constructor(n: string){
         this.name = n;
     }
-
-    @METH_DECORATOR
-    calculateAge(@PARAM_DECORATOR dob: string){
-        //calculate the age
-    }
 }
-// When we use multiple decorators on class then the decorator execution will be bottom up
-// When we use multiple decorators on the property then the execution will be top to bottom
+
+// const p = new Person('John');
+// So when we create the object of the class then we can see that it will print the message as creating 
